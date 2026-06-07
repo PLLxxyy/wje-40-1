@@ -10,6 +10,7 @@ import { TrendingUp, TrendingDown } from 'lucide-react';
 function App() {
   const {
     stocks,
+    allStocks,
     selectedStock,
     selectedCode,
     setSelectedCode,
@@ -18,6 +19,10 @@ function App() {
     kline,
     ticks,
     orderBook,
+    searchStock,
+    addToWatchlist,
+    removeFromWatchlist,
+    isInWatchlist,
   } = useStocks(2000);
 
   const pct = selectedStock ? changePercent(selectedStock.price, selectedStock.prevClose) : 0;
@@ -25,9 +30,20 @@ function App() {
 
   return (
     <div className="h-screen flex flex-col bg-slate-900">
-      <SearchBar onSearch={(code) => setSelectedCode(code)} />
+      <SearchBar
+        searchStock={searchStock}
+        addToWatchlist={addToWatchlist}
+        isInWatchlist={isInWatchlist}
+        onSelect={setSelectedCode}
+        allStocks={allStocks}
+      />
       <div className="flex-1 flex overflow-hidden">
-        <WatchList stocks={stocks} selectedCode={selectedCode} onSelect={setSelectedCode} />
+        <WatchList
+          stocks={stocks}
+          selectedCode={selectedCode}
+          onSelect={setSelectedCode}
+          onRemove={removeFromWatchlist}
+        />
         <div className="flex-1 flex flex-col min-w-0">
           <div className="px-4 py-2 border-b border-slate-700 flex items-center gap-4">
             <span className="text-lg font-bold text-slate-100">{selectedStock?.name}</span>
